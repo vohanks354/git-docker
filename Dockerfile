@@ -1,4 +1,4 @@
-FROM quay.io/vohanks3540/centos:7
+FROM centos:7
 
 # USER 0
 
