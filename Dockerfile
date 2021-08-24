@@ -1,6 +1,6 @@
 FROM centos:7
 
-# USER 0
+USER 0
 
 RUN yum -y --setopt=tsflags=nodocs update && \
     yum -y --setopt=tsflags=nodocs install httpd && \
