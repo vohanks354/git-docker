@@ -1,13 +1,15 @@
-FROM jenkins:2.60.3-alpine
-USER root
-RUN apt-get update && apt-get install -y apt-transport-https \
-       ca-certificates curl gnupg2 \
-       software-properties-common
-RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
-RUN apt-key fingerprint 0EBFCD88
-RUN add-apt-repository \
-       "deb [arch=amd64] https://download.docker.com/linux/debian \
-       $(lsb_release -cs) stable"
-RUN apt-get update && apt-get install -y docker-ce-cli
-USER jenkins
-RUN jenkins-plugin-cli --plugins "blueocean:1.24.7 docker-workflow:1.26"
+FROM centos:7
+
+USER 0
+
+COPY jenkins.repo /home
+WORKDIR /home
+
+RUN yum -y install java-1.8.0-openjdk-devel && \
+    rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key && \
+    yum -y install jenkins
+
+RUN mkdir /home/jenkins && \
+    chmod 777 /home/jenkins
+
+CMD ["systemctl start jenkins"]
